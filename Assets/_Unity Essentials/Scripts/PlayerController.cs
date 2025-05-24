@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
 using UnityEngine.UI;
+using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
@@ -36,8 +37,6 @@ public class PlayerController : MonoBehaviour
     {
         if (health <= 0)
         {
-            // Debug.Log("Game Over!");
-
             if (winLoseText != null)
             {
                 winLoseText.text = "Game Over!";
@@ -49,7 +48,7 @@ public class PlayerController : MonoBehaviour
                 winLoseBG.color = Color.red;
             }
 
-            // Optionally disable movement
+            StartCoroutine(LoadScene(3)); // Wait 3 seconds before reload
             enabled = false;
         }
     }
@@ -71,8 +70,6 @@ public class PlayerController : MonoBehaviour
 
         if (other.CompareTag("Goal"))
         {
-            // Debug.Log("You win!");
-
             if (winLoseText != null)
             {
                 winLoseText.text = "You Win!";
@@ -83,6 +80,9 @@ public class PlayerController : MonoBehaviour
             {
                 winLoseBG.color = Color.green;
             }
+
+            StartCoroutine(LoadScene(3)); // Wait 3 seconds before reload
+            enabled = false;
         }
     }
 
@@ -100,5 +100,12 @@ public class PlayerController : MonoBehaviour
         {
             healthText.text = "Health: " + health;
         }
+    }
+
+    // Coroutine to wait and reload the scene
+    private IEnumerator LoadScene(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
