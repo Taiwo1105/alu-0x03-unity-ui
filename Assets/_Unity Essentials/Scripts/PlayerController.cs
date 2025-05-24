@@ -1,13 +1,17 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using TMPro;  // Required for TextMeshPro
+using TMPro;
+using UnityEngine.UI;  // Required for Image
 
 public class PlayerController : MonoBehaviour
 {
     public float speed = 5.0f;
     public int health = 5;
-    public TMP_Text scoreText;  // Reference to score display
-    public TMP_Text healthText; // Reference to health display
+
+    public TMP_Text scoreText;       // Reference to score display
+    public TMP_Text healthText;      // Reference to health display
+    public TMP_Text winLoseText;     // Reference to Win/Lose Text
+    public Image winLoseBG;          // Reference to background image (UI panel)
 
     private int score = 0;
     private Rigidbody rb;
@@ -15,8 +19,8 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
-        SetScoreText();   // Initialize score text
-        SetHealthText();  // Initialize health text
+        SetScoreText();
+        SetHealthText();
     }
 
     private void FixedUpdate()
@@ -54,12 +58,22 @@ public class PlayerController : MonoBehaviour
         {
             health--;
             SetHealthText();
-            // Debug.Log("Health: " + health); // Optional: comment out log
         }
 
         if (other.CompareTag("Goal"))
         {
-            Debug.Log("You win!");
+            // Debug.Log("You win!");
+
+            if (winLoseText != null)
+            {
+                winLoseText.text = "You Win!";
+                winLoseText.color = Color.black;
+            }
+
+            if (winLoseBG != null)
+            {
+                winLoseBG.color = Color.green;
+            }
         }
     }
 
