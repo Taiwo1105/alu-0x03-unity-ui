@@ -1,17 +1,17 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
-using UnityEngine.UI;  // Required for Image
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
     public float speed = 5.0f;
     public int health = 5;
 
-    public TMP_Text scoreText;       // Reference to score display
-    public TMP_Text healthText;      // Reference to health display
-    public TMP_Text winLoseText;     // Reference to Win/Lose Text
-    public Image winLoseBG;          // Reference to background image (UI panel)
+    public TMP_Text scoreText;
+    public TMP_Text healthText;
+    public TMP_Text winLoseText;
+    public Image winLoseBG;
 
     private int score = 0;
     private Rigidbody rb;
@@ -36,12 +36,21 @@ public class PlayerController : MonoBehaviour
     {
         if (health <= 0)
         {
-            Debug.Log("Game Over!");
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-            health = 5;
-            score = 0;
-            SetScoreText();
-            SetHealthText();
+            // Debug.Log("Game Over!");
+
+            if (winLoseText != null)
+            {
+                winLoseText.text = "Game Over!";
+                winLoseText.color = Color.white;
+            }
+
+            if (winLoseBG != null)
+            {
+                winLoseBG.color = Color.red;
+            }
+
+            // Optionally disable movement
+            enabled = false;
         }
     }
 
