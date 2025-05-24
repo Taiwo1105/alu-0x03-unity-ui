@@ -1,21 +1,21 @@
 using UnityEngine;
-using UnityEngine.SceneManagement; // Required for reloading the scene
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
+// Controls player movement on the XZ plane using physics and tracks score/health.
 public class PlayerController : MonoBehaviour
 {
     public float speed = 5.0f;      // Editable movement speed
     public int health = 5;          // Player health set to 5 in Inspector
+    public Text scoreText;          // UI Text object for displaying score
 
     private Rigidbody rb;
     private int score = 0;          // Tracks collected pickups
-    private int initialHealth;      // Store initial health for reset
-    private int initialScore = 0;   // Store initial score for reset
 
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
-        initialHealth = health;
-        score = initialScore;
+        SetScoreText(); // Initialize score display
     }
 
     private void FixedUpdate()
@@ -27,22 +27,13 @@ public class PlayerController : MonoBehaviour
         rb.MovePosition(rb.position + movement * Time.fixedDeltaTime);
     }
 
-    private void Update()
-    {
-        if (health <= 0)
-        {
-            Debug.Log("Game Over!");
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        }
-    }
-
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Pickup"))
         {
             score++;
-            Debug.Log("Score: " + score);
-            other.gameObject.SetActive(false); // or use Destroy(other.gameObject);
+            SetScoreText();
+            other.gameObject.SetActive(false); // Or use Destroy(other.gameObject);
         }
 
         if (other.CompareTag("Trap"))
@@ -50,5 +41,19 @@ public class PlayerController : MonoBehaviour
             health--;
             Debug.Log("Health: " + health);
         }
+
+        if (other.CompareTag("Goal"))
+        {
+            Debug.Log("You win!");
+        }
+    }
+
+    private void SetScoreText()
+    {
+        if (scoreText != null)
+        {
+            scoreText.text = "Score: " + score;
+        }
     }
 }
+
