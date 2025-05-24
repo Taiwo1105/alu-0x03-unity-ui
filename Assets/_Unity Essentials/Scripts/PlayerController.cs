@@ -35,6 +35,12 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        // Check if Esc key is pressed to load the menu scene
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            SceneManager.LoadScene("Menu"); // Change "Menu" to your menu scene name
+        }
+
         if (health <= 0)
         {
             if (winLoseText != null)
