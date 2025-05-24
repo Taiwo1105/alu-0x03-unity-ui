@@ -1,21 +1,20 @@
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
+using TMPro;  // Import TextMeshPro namespace
 
-// Controls player movement on the XZ plane using physics and tracks score/health.
 public class PlayerController : MonoBehaviour
 {
-    public float speed = 5.0f;      // Editable movement speed
-    public int health = 5;          // Player health set to 5 in Inspector
-    public Text scoreText;          // UI Text object for displaying score
+    public float speed = 5.0f;
+    public int health = 5;
+    private int score = 0;
 
     private Rigidbody rb;
-    private int score = 0;          // Tracks collected pickups
+    public TMP_Text scoreText;  // Use TMP_Text for TextMeshPro UI
 
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
-        SetScoreText(); // Initialize score display
+        SetScoreText();  // Initialize score display
     }
 
     private void FixedUpdate()
@@ -33,7 +32,7 @@ public class PlayerController : MonoBehaviour
         {
             score++;
             SetScoreText();
-            other.gameObject.SetActive(false); // Or use Destroy(other.gameObject);
+            other.gameObject.SetActive(false);
         }
 
         if (other.CompareTag("Trap"))
