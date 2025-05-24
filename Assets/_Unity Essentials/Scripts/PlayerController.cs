@@ -1,20 +1,22 @@
 using UnityEngine;
-using UnityEngine.UI;
-using TMPro;  // Import TextMeshPro namespace
+using UnityEngine.SceneManagement;
+using TMPro;  // Required for TextMeshPro
 
 public class PlayerController : MonoBehaviour
 {
     public float speed = 5.0f;
     public int health = 5;
-    private int score = 0;
+    public TMP_Text scoreText;  // Reference to score display
+    public TMP_Text healthText; // Reference to health display
 
+    private int score = 0;
     private Rigidbody rb;
-    public TMP_Text scoreText;  // Use TMP_Text for TextMeshPro UI
 
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
-        SetScoreText();  // Initialize score display
+        SetScoreText();   // Initialize score text
+        SetHealthText();  // Initialize health text
     }
 
     private void FixedUpdate()
@@ -24,6 +26,19 @@ public class PlayerController : MonoBehaviour
 
         Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical) * speed;
         rb.MovePosition(rb.position + movement * Time.fixedDeltaTime);
+    }
+
+    private void Update()
+    {
+        if (health <= 0)
+        {
+            Debug.Log("Game Over!");
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            health = 5;
+            score = 0;
+            SetScoreText();
+            SetHealthText();
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -38,7 +53,8 @@ public class PlayerController : MonoBehaviour
         if (other.CompareTag("Trap"))
         {
             health--;
-            Debug.Log("Health: " + health);
+            SetHealthText();
+            // Debug.Log("Health: " + health); // Optional: comment out log
         }
 
         if (other.CompareTag("Goal"))
@@ -54,5 +70,12 @@ public class PlayerController : MonoBehaviour
             scoreText.text = "Score: " + score;
         }
     }
-}
 
+    private void SetHealthText()
+    {
+        if (healthText != null)
+        {
+            healthText.text = "Health: " + health;
+        }
+    }
+}

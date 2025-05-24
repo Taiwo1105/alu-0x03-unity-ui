@@ -4898,6 +4898,7 @@ MonoBehaviour:
   speed: 10
   health: 5
   scoreText: {fileID: 1313843036}
+  healthText: {fileID: 859111661}
 --- !u!1 &1409268687
 GameObject:
   m_ObjectHideFlags: 0
